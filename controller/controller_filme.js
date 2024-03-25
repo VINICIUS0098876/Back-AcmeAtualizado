@@ -100,9 +100,10 @@ const setAtualizarFilme = async function(idFilme, dadoAtualizado, contentType){
         // Validação de content-type (apenas aplication/json)
         if(String(contentType).toLowerCase() == 'application/json'){
             let dadosID = filmesDAO.selectByIdFilme()
+            
             if(idFilme == '' || idFilme == undefined || idFilme == isNaN(idFilme) || idFilme == null){
                 return message.ERROR_INVALID_ID
-            }else if(idFilme>dadosID.length == 0 ){
+            }else if(idFilme>dadosID.length){
                 return message.ERROR_NOT_FOUND
             }else{
                 // Cria o objeto JSON para devolver os dados criados na requisição
@@ -157,7 +158,6 @@ const setAtualizarFilme = async function(idFilme, dadoAtualizado, contentType){
                                 atualizarFilmeJSON.status      = message.SUCCESS_UPDATED_ITEM.status
                                 atualizarFilmeJSON.status_code = message.SUCCESS_UPDATED_ITEM.status_code
                                 atualizarFilmeJSON.message     = message.SUCCESS_UPDATED_ITEM.message
-                                console.log(atualizarFilmeJSON.filme)
                                 return atualizarFilmeJSON //201
                                 
                             }else{
