@@ -29,8 +29,8 @@ const insertFilme = async function(dadosFilme){
                                             foto_capa,
                                             valor_unitario        
                 )values(
-                                           '${dadosFilme.nome}',
-                                           '${dadosFilme.sinopse}',
+                                           "${dadosFilme.nome}",
+                                           "${dadosFilme.sinopse}",
                                            '${dadosFilme.duracao}',
                                            '${dadosFilme.data_lancamento}',
                                            '${dadosFilme.data_relancamento}',
@@ -48,8 +48,8 @@ const insertFilme = async function(dadosFilme){
                 foto_capa,
                 valor_unitario        
 )values(
-               '${dadosFilme.nome}',
-               '${dadosFilme.sinopse}',
+               "${dadosFilme.nome}",
+               "${dadosFilme.sinopse}",
                '${dadosFilme.duracao}',
                '${dadosFilme.data_lancamento}',
                null,
@@ -62,7 +62,7 @@ const insertFilme = async function(dadosFilme){
                // (insert, update e delete)
             //$queryRawUnsafe() -> serve para executar scripts com retorno de dados (select)
 
-            
+            console.log(sql)
              let result = await prisma.$executeRawUnsafe(sql)
     
              if(result){
@@ -85,8 +85,8 @@ try{
     dadoAtualizado.data_relancamento   != null &&
     dadoAtualizado.data_relancamento   != undefined){
         sql = `update tbl_filme set 
-        nome = '${dadoAtualizado.nome}',
-        sinopse = '${dadoAtualizado.sinopse}',
+        nome = "${dadoAtualizado.nome}",
+        sinopse = "${dadoAtualizado.sinopse}",
         duracao = '${dadoAtualizado.duracao}',
         data_lancamento = '${dadoAtualizado.data_lancamento}',
         data_relancamento = '${dadoAtualizado.data_relancamento}',
@@ -96,8 +96,8 @@ try{
         id = ${id}`
     }else{
         sql = `update tbl_filme set 
-        nome = '${dadoAtualizado.nome}',
-        sinopse = '${dadoAtualizado.sinopse}',
+        nome = "${dadoAtualizado.nome}",
+        sinopse = "${dadoAtualizado.sinopse}",
         duracao = '${dadoAtualizado.duracao}',
         data_lancamento = '${dadoAtualizado.data_lancamento}',
         foto_capa = '${dadoAtualizado.foto_capa}',
