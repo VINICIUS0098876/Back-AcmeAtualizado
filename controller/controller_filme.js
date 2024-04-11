@@ -179,7 +179,7 @@ const setAtualizarFilme = async function(idFilme, dadoAtualizado, contentType){
             
     
 
-        }
+}
 
 
 // Função para excluir um filme

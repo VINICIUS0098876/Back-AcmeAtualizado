@@ -38,6 +38,7 @@ app.use((request, response, next) =>{
 
 /*********************** Import dos arquivos de controller do projeto ***********************************/
     const controllerFilmes = require('./controller/controller_filme.js')
+    const controllerGenero = require('./controller/controller_genero.js')
 /*******************************************************************************************************/
 
 // Criando um objeto para controlar a chegada dos dados da requisição em formato JSON
@@ -143,6 +144,69 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
         response.json(dadosFilme)
     })
 
+    /*********************************************** GENERO **********************************************/
+    app.get('/v2/acmeFilmes/genero', cors(), async function(request, response){
+
+
+        // -> Chama a função da controller para retornar todos os filmes
+        let dadosGenero = await controllerGenero.getListarGenero()
+
+        if(dadosGenero){
+            response.json(dadosGenero);
+            response.status(200);
+        } else {
+                response.json({message: 'Nenhum registro nessa porra'})
+                response.status(404)
+        }
+    })
+    
+    app.post('/v2/acmeFilmes/genero', cors(), bodyParserJSON, async function(request, response){
+
+        // Recebe o content-type da requisição
+        let contentType = request.headers['content-type']
+
+        //Recebe todos os dados encaminhados na requisição pelo Body
+        let dadosBody = request.body
+
+        //Encaminha os dados para a controller enviar para o DAO
+        let resultDadosNovoGenero = await controllerGenero.setInserirNovoGenero(dadosBody, contentType)
+        
+        console.log(resultDadosNovoGenero);
+        response.status(200)
+        response.json(resultDadosNovoGenero)
+    })
+    
+    app.put('/v2/acmeFilmes/genero/:id', cors(), bodyParserJSON, async function(request, response){
+        let contentType = request.headers['content-type']
+        let dadosBody = request.body
+        let idGenero = request.params.id
+
+        let dadosGenero = await controllerGenero.setAtualizarGenero(idGenero, dadosBody, contentType)
+
+        console.log(dadosGenero)
+        response.status(200)
+        response.json(dadosGenero)
+    })
+
+    app.get('/v2/acmeFilmes/genero/Filtro', cors(), async function(request, response){
+        let nome = request.query.nome
+        let dadosGenero = await controllerGenero.getNomeGenero(nome)
+
+        response.status(dadosGenero.status_code)
+        response.json(dadosGenero)
+    })
+
+    app.get('/v2/acmeFilmes/genero/:id', cors(), async function(request, response, next){
+
+        // Recebe o id da requisição
+        let idGenero = request.params.id
+        // Encaminha o ID para a controller buscar o Filme
+        let dadosGenero = await controllerGenero.getBuscarGenero(idGenero)
+
+        //
+        response.status(200)
+        response.json(dadosGenero)
+    })
 
 
 
