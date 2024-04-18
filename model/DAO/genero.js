@@ -68,10 +68,12 @@ const selectAllGenero = async function(){
     }
 }
 
-const selectByIdGenero = async function(){
+const selectByIdGenero = async function(id){
     try {
         // Script sql para buscar o filme pelo id
-        const sql = `select * from tbl_genero where id = ${id}`
+        const sql = `select * from tbl_genero where tbl_genero.id_genero = ${id}`
+
+        console.log(sql);
     
         // Caminha o script sql para o banco de dados
         let rsFilme = await prisma.$queryRawUnsafe(sql)

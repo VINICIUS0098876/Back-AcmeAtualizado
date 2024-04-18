@@ -73,6 +73,7 @@ const setInserirNovoGenero = async function(dadosGenero, contentType){
 const setAtualizarGenero = async function(id, dadoAtualizado, contentType){
 
     try{
+
         let idGenero = id
 
         // Validação de content-type (apenas aplication/json)
@@ -81,6 +82,7 @@ const setAtualizarGenero = async function(id, dadoAtualizado, contentType){
             
             if(idGenero == '' || idGenero == undefined || idGenero == isNaN(idGenero) || idGenero == null){
                 return message.ERROR_INVALID_ID
+
             }else if(idGenero>dadosID.length){
                 return message.ERROR_NOT_FOUND
             }else{
@@ -89,7 +91,6 @@ const setAtualizarGenero = async function(id, dadoAtualizado, contentType){
 
                     //Validação de campos obrigatórios ou com digitação inválida
                     if(dadoAtualizado.nome == ''                  || dadoAtualizado.nome == undefined            || dadoAtualizado.nome == null            || dadoAtualizado.nome.length > 80          
-                    
                     ){
                         return message.ERROR_REQUIRED_FIELDS
                     }
@@ -97,13 +98,10 @@ const setAtualizarGenero = async function(id, dadoAtualizado, contentType){
                     else{
                         let validateStatus = true
 
-                        
-                
-                    
+                          
                 
                         // Validação para verificar se a variavel booleana é verdadeira
                         if(validateStatus){
-                
                             // Encaminha os dados do filme para o DAO inserir no DB
                             let dadosGenero = await generoDAO.updateGenero(idGenero, dadoAtualizado)
                             
@@ -116,7 +114,7 @@ const setAtualizarGenero = async function(id, dadoAtualizado, contentType){
                                 atualizarGeneroJSON.status      = message.SUCCESS_UPDATED_ITEM.status
                                 atualizarGeneroJSON.status_code = message.SUCCESS_UPDATED_ITEM.status_code
                                 atualizarGeneroJSON.message     = message.SUCCESS_UPDATED_ITEM.message
-                                return atualizarFilmeJSON //201
+                                return atualizarGeneroJSON //201
                                 
                             }else{
                                 return message.ERROR_INTERNAL_SERVER_DB //500
@@ -131,6 +129,8 @@ const setAtualizarGenero = async function(id, dadoAtualizado, contentType){
             }else{
                 return message.ERROR_CONTENT_TYPE //415
             }
+
+
         }catch(error){
         return message.ERROR_INTERNAL_SERVER //500 - erro na controller
     }
@@ -187,6 +187,7 @@ const getListarGenero = async function(){
 const getBuscarGenero = async function(id){
     try {
          // Recebe o id do filme
+      
      let idGenero = id
 
      //Cria o objeto JSON
@@ -201,7 +202,6 @@ const getBuscarGenero = async function(id){
          //Encaminha para o DAO localizar o id do filme 
          let dadosGenero = await generoDAO.selectByIdGenero(id)
  
- 
          // Validação para verificar se existem dados de retorno
          if(dadosGenero){
  
@@ -211,6 +211,7 @@ const getBuscarGenero = async function(id){
                  generoJSON.genero = dadosGenero
                  generoJSON.status_code = 200
      
+                 
                  return generoJSON
              }else{
                  return message.ERROR_NOT_FOUND // 404
@@ -262,3 +263,113 @@ module.exports = {
     getNomeGenero
     
 }
+
+
+// let idGenero = id
+
+        // // Validação de content-type (apenas aplication/json)
+        // if(String(contentType).toLowerCase() == 'application/json'){
+        //     let dadosID = generoDAO.selectByIdGenero()
+            
+        //     if(idGenero == '' || idGenero == undefined || idGenero == isNaN(idGenero) || idGenero == null){
+        //         return message.ERROR_INVALID_ID
+
+        //     }else if(idGenero>dadosID.length){
+        //         return message.ERROR_NOT_FOUND
+        //     }else{
+        //         // Cria o objeto JSON para devolver os dados criados na requisição
+        //             let atualizarGeneroJSON = {}
+
+        //             //Validação de campos obrigatórios ou com digitação inválida
+        //             if(dadoAtualizado.nome == ''                  || dadoAtualizado.nome == undefined            || dadoAtualizado.nome == null            || dadoAtualizado.nome.length > 80          
+                    
+        //             ){
+        //                 return message.ERROR_REQUIRED_FIELDS
+        //             }
+                
+        //             else{
+        //                 let validateStatus = false
+
+                        
+                
+                    
+                
+        //                 // Validação para verificar se a variavel booleana é verdadeira
+        //                 if(validateStatus){
+                
+        //                     // Encaminha os dados do filme para o DAO inserir no DB
+        //                     let dadosGenero = await generoDAO.updateGenero(idGenero, dadoAtualizado)
+                            
+        //                     // Validação para verificar se o DAO inseriu os dados do DB
+        //                     console.log(dadosGenero)
+        //                     if(dadosGenero){
+                    
+        //                         //Cria o JSON de retorno dos dados (201)
+        //                         atualizarGeneroJSON.filme       = dadosGenero
+        //                         atualizarGeneroJSON.status      = message.SUCCESS_UPDATED_ITEM.status
+        //                         atualizarGeneroJSON.status_code = message.SUCCESS_UPDATED_ITEM.status_code
+        //                         atualizarGeneroJSON.message     = message.SUCCESS_UPDATED_ITEM.message
+        //                         return atualizarFilmeJSON //201
+                                
+        //                     }else{
+        //                         return message.ERROR_INTERNAL_SERVER_DB //500
+        //                     }
+        //                 }else{
+        //                     validateStatus = false
+        //                 }
+                
+        //             }
+                    
+        //         }
+        //     }else{
+        //         return message.ERROR_CONTENT_TYPE //415
+        //     }
+
+
+
+
+
+
+
+         // let idGenero = id
+
+        // if(idGenero == '' || idGenero == undefined || isNaN (idGenero)){
+        //     return message.ERROR_INVALID_ID
+        // } else {
+        //     if(String(contentType).toLowerCase() == 'application/json'){
+        //         let updateGeneroJson = {};
+        //         if(dadoAtualizado.nome == ''                      || dadoAtualizado.nome == undefined               ||  dadoAtualizado.nome == null               || dadoAtualizado.nome.length > 40
+
+        //         ){
+
+        //             return message.ERROR_REQUIRED_FIELDS
+        //         } else {
+        //             let validateStatus = true;
+
+        //             let generoById = await generoDAO.selectByIdGenero(id)
+
+        //             if(generoById.length>0){
+        //                 if(validateStatus){
+        //                     let updateGenero = await generoDAO.updateGenero(id, dadoAtualizado);
+
+        //                     console.log(updateGenero)
+        //                     if(updateGenero){
+                                
+        //                 updateGeneroJson.genero = dadoAtualizado
+        //                 updateGeneroJson.status = message.SUCESS_UPTADE_ITEM.status
+        //                 updateGeneroJson.status_code = message.SUCESS_UPTADE_ITEM.status_code
+        //                 updateGeneroJson.message = message.SUCESS_UPTADE_ITEM.message
+    
+        //                 return updateGeneroJson;
+        //                     } else {
+        //                         return message.ERROR_INTERNAL_SERVER_DB
+        //                     }
+        //                 }
+        //             } else {
+        //                 return message.ERROR_NOT_FOUND
+        //             }
+        //         }
+        //     } else {
+        //         return message.ERROR_CONTENT_TYPE
+        //     }
+        // }

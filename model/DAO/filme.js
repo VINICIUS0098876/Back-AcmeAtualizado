@@ -35,7 +35,8 @@ const insertFilme = async function(dadosFilme){
                                            '${dadosFilme.data_lancamento}',
                                            '${dadosFilme.data_relancamento}',
                                            '${dadosFilme.foto_capa}',
-                                           '${dadosFilme.valor_unitario}'
+                                           '${dadosFilme.valor_unitario}',
+                                           '${dadosFilme.id_classificacao}'
                 )`
 
         }else{
@@ -54,7 +55,8 @@ const insertFilme = async function(dadosFilme){
                '${dadosFilme.data_lancamento}',
                null,
                '${dadosFilme.foto_capa}',
-               '${dadosFilme.valor_unitario}'
+               '${dadosFilme.valor_unitario}',
+               '${dadosFilme.id_classificacao}'
 )`
         }
 
@@ -91,7 +93,8 @@ try{
         data_lancamento = '${dadoAtualizado.data_lancamento}',
         data_relancamento = '${dadoAtualizado.data_relancamento}',
         foto_capa = '${dadoAtualizado.foto_capa}',
-        valor_unitario = '${dadoAtualizado.valor_unitario}'
+        valor_unitario = '${dadoAtualizado.valor_unitario}',
+        id_classificacao = '${dadosFilme.id_classificacao}'
         where
         id = ${id}`
     }else{
@@ -101,7 +104,8 @@ try{
         duracao = '${dadoAtualizado.duracao}',
         data_lancamento = '${dadoAtualizado.data_lancamento}',
         foto_capa = '${dadoAtualizado.foto_capa}',
-        valor_unitario = '${dadoAtualizado.valor_unitario}'
+        valor_unitario = '${dadoAtualizado.valor_unitario}',
+        id_classificacao = '${dadosFilme.id_classificacao}'
         where
         id = ${id}`
     }

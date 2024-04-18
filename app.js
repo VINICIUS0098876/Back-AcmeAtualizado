@@ -39,6 +39,10 @@ app.use((request, response, next) =>{
 /*********************** Import dos arquivos de controller do projeto ***********************************/
     const controllerFilmes = require('./controller/controller_filme.js')
     const controllerGenero = require('./controller/controller_genero.js')
+    const controllerClassificacao = require ('./controller/controller_classificacao.js')
+    const controllerNacionalidade = require ('./controller/controller_nacionalidade.js')
+    const controllerSexo = require ('./controller/controller_sexo.js')
+    const controllerAtor = require ('./controller/controller_ator.js')
 /*******************************************************************************************************/
 
 // Criando um objeto para controlar a chegada dos dados da requisição em formato JSON
@@ -207,6 +211,147 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
         response.status(200)
         response.json(dadosGenero)
     })
+
+    /************************************************** Classificação *****************************************/
+    app.post('/v2/filmesAcme/classificacao', cors(), bodyParserJSON, async function (request, response,next ){
+
+        // recebe o ContentType com os tipos de dados encaminhados na requisição
+        let contentType = request.headers['content-type'];
+    
+        // vou receber o que chegar no corpo da requisição e guardar nessa variável local
+        let dadosBody = request.body;
+        // encaminha os dados para a controller enviar para o DAO
+        let resultDadosNovaClassificacao = await controllerClassificacao.setInserirNovoClassificacao(dadosBody, contentType)
+    
+    
+        response.status(200);
+        response.json(resultDadosNovaClassificacao);
+    
+    })
+
+    app.delete('/v2/filmesAcme/deleteClassificacao/:id', cors (), async function (request,response,next){
+
+        let idClassificacao = request.params.id
+    
+        let dadosClassificacao = await controllerClassificacao.setExcluirNovoClassificacao(idClassificacao);
+    
+        response.status(200);
+        response.json(dadosClassificacao)
+    })
+
+    app.get('/v2/filmesAcme/classificacao', cors(),async function (request,response,next){
+
+        // chama a função da controller para retornar os filmes;
+        let dadosClassificacao = await controllerClassificacao.setListarClassificacao();
+    
+        // validação para retornar o Json dos filmes ou retornar o erro 404;
+        if(dadosClassificacao){
+            response.json(dadosClassificacao);
+            response.status(200);
+        }else{
+            response.json({message: 'Nenhum registro foi encontrado'});
+            response.status(404);
+        }
+    });
+
+    app.get('/v2/filmesAcme/classificacao/:id', cors(), async function(request,response,next){
+
+        // recebe o id da requisição
+        let idClassificacao = request.params.id
+    
+        //encaminha o id para a acontroller buscar o filme
+        let dadosClassificacao = await controllerClassificacao.setListarClassificacaoById(idClassificacao);
+    
+        response.status(dadosClassificacao.status_code);
+        response.json(dadosClassificacao);
+    })
+
+    app.put('/v2/filmesAcme/uptadeClassificacao/:id', cors(), bodyParserJSON, async function(request,response,next){
+
+        let idClassificacao = request.params.id
+        let contentType = request.headers['content-type'];
+        let dadosBody = request.body
+    
+        let resultUptadeClassificacao = await controllerClassificacao.setAtualizarNovoClassificacao(idClassificacao, dadosBody, contentType);
+    
+        console.log();
+        response.status(200)
+        response.json(resultUptadeClassificacao)
+    
+    } )
+
+    /***************************************** NACIONALIDADE ************************************************************/
+
+    app.get('/v2/filmesAcme/nacionalidade', cors(),async function (request,response,next){
+
+        // chama a função da controller para retornar os filmes;
+        let dadosNacionalidade = await controllerNacionalidade.setListarNacionalidade();
+    
+        // validação para retornar o Json dos filmes ou retornar o erro 404;
+        if(dadosNacionalidade){
+            response.json(dadosNacionalidade);
+            response.status(200);
+        }else{
+            response.json({message: 'Nenhum registro foi encontrado'});
+            response.status(404);
+        }
+    });
+
+    app.get('/v2/filmesAcme/nacionalidade/:id', cors(), async function(request,response,next){
+
+        // recebe o id da requisição
+        let idNacionalidade = request.params.id
+    
+        //encaminha o id para a acontroller buscar o filme
+        let dadosNacionalidade = await controllerNacionalidade.setListarNacionalidadeById(idNacionalidade);
+    
+        response.status(dadosNacionalidade.status_code);
+        response.json(dadosNacionalidade);
+    })
+
+    /********************************************** SEXO ****************************************************************/
+
+    app.get('/v2/filmesAcme/sexo', cors(),async function (request,response,next){
+
+        // chama a função da controller para retornar os filmes;
+        let dadosSexo = await controllerSexo.setListarSexo();
+    
+        // validação para retornar o Json dos filmes ou retornar o erro 404;
+        if(dadosSexo){
+            response.json(dadosSexo);
+            response.status(200);
+        }else{
+            response.json({message: 'Nenhum registro foi encontrado'});
+            response.status(404);
+        }
+    });
+
+    app.get('/v2/filmesAcme/sexo/:id', cors(), async function(request,response,next){
+
+        // recebe o id da requisição
+        let idSexo = request.params.id
+    
+        //encaminha o id para a acontroller buscar o filme
+        let dadosSexo = await controllerSexo.setListarSexoById(idSexo);
+    
+        response.status(dadosSexo.status_code);
+        response.json(dadosSexo);
+    })
+
+    /*********************************************** ATOR ****************************************************************/
+    app.get('/v2/filmesAcme/atores', cors(),async function (request,response,next){
+
+        // chama a função da controller para retornar os filmes;
+        let dadosAtor = await controllerAtor.setListarAtor()
+    
+        // validação para retornar o Json dos filmes ou retornar o erro 404;
+       response.status(dadosAtor.status_code)
+       response.json(dadosAtor)
+    });
+
+
+    
+    
 
 
 
