@@ -26,7 +26,7 @@ const setInserirNovoClassificacao = async function(dadosClassificacao, contentTy
             
         
             // validação de campos obrigatorios ou com digitação inválida
-            if(dadosClassificacao.caracteristicas == ''    || dadosClassificacao.caracteristicas == undefined       ||  dadosClassificacao.caracteristicas == null               || dadosClassificacao.caracteristicas.length > 150 ||
+            if(dadosClassificacao.caracteristica == ''    || dadosClassificacao.caracteristica == undefined       ||  dadosClassificacao.caracteristica == null               || dadosClassificacao.caracteristica.length > 150 ||
                dadosClassificacao.faixa_etaria == ''  ||   dadosClassificacao.faixa_etaria == undefined  || dadosClassificacao.faixa_etaria == null   || dadosClassificacao.faixa_etaria.length > 2 ||
                dadosClassificacao.classificacao == '' ||  dadosClassificacao.classificacao == undefined || dadosClassificacao.classificacao == null  || dadosClassificacao.classificacao.length > 45    
             ){
@@ -43,7 +43,7 @@ const setInserirNovoClassificacao = async function(dadosClassificacao, contentTy
         
                 // Encaminha os dados do filme para o DAO inserir dados
                 let novoClassificacao = await classificacaoDAO.insertClassificacao(dadosClassificacao);
-        
+        console.log(novoClassificacao);
                 
                 // validação para verificar se o DAO inseriu os dados do BD
                 if (novoClassificacao)

@@ -8,6 +8,7 @@
 // Import do arquivo responsavel pela interação com DB(model)
 const { application } = require('express')
 const sexoDAO = require('../model/DAO/sexo.js')
+const nacionalidadeDAO = require('../model/DAO/nacionalidade.js')
 // Import do arquivo de configuração do projeto
 const message = require('../modulo/config.js')
 const { join } = require('@prisma/client/runtime/library.js')
@@ -82,8 +83,44 @@ const setListarSexoById = async function(id){
    }
 }
 
+const setListarAtorSexo = async function(nome){
+    let nomeSexo = nome
+
+    let sexoJSON = {}
+
+    if(nomeSexo == '' || nomeSexo == undefined){
+        return message.ERROR_INVALID_ID // 400
+    }else{
+        let dadosSexo = await sexoDAO.selectNameSexo(nomeSexo)
+        console.log(dadosSexo)
+    
+        if(dadosSexo){
+    
+            if(dadosSexo.length > 0){
+                for(let atores of dadosSexo){
+                    let sexoAtor = await sexoDAO.selectByIdSexo(atores.id_sexo)
+                    let nacionalidadeAtor = await nacionalidadeDAO.selectNacionalidadeAtor(atores.id_ator)
+                    delete atores.id_sexo
+                    atores.sexo = sexoAtor
+                    atores.nacionalidade = nacionalidadeAtor
+                }
+                sexoJSON.Atores = dadosSexo
+                sexoJSON.quantidade = dadosSexo.length
+                sexoJSON.status_code = 200
+                
+                return sexoJSON
+            }else{
+                return message.ERROR_NOT_FOUND // 404
+            }
+        }else{
+            return message.ERROR_INTERNAL_SERVER_DB // 500
+        }
+    }
+}
+
 module.exports = {
     setListarSexo,
-    setListarSexoById
+    setListarSexoById,
+    setListarAtorSexo
 }
 

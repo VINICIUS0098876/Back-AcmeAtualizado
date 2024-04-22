@@ -146,7 +146,7 @@ try {
         let dadosGenero = await generoDAO.deleteGenero(idGenero)
 
         if(dadosGenero){
-            message.SUCCESS_DELETED_ITEM
+           return message.SUCCESS_DELETED_ITEM
         }else{
             return message.ERROR_NOT_FOUND
         }

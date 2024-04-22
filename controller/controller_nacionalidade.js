@@ -8,6 +8,7 @@
 // Import do arquivo responsavel pela interação com DB(model)
 const { application } = require('express')
 const nacionalidadeDAO = require('../model/DAO/nacionalidade.js')
+const sexoDAO = require('../model/DAO/sexo.js')
 // Import do arquivo de configuração do projeto
 const message = require('../modulo/config.js')
 const { join } = require('@prisma/client/runtime/library.js')
@@ -82,7 +83,43 @@ const setListarNacionalidadeById = async function(id){
    }
 }
 
+const setListarAtorNacionalidade = async function(nome){
+    let nomeNacionalidade = nome
+
+    let nacionalidadeJSON = {}
+
+    if(nomeNacionalidade == '' || nomeNacionalidade == undefined){
+        return message.ERROR_INVALID_ID // 400
+    }else{
+        let dadosNacionalidade = await nacionalidadeDAO.selectAtorByNacionalidade(nomeNacionalidade)
+
+    
+        if(dadosNacionalidade){
+    
+            if(dadosNacionalidade.length > 0){
+                for(let atores of dadosNacionalidade){
+                    let sexoAtor = await sexoDAO.selectByIdSexo(atores.id_sexo)
+                    let nacionalidadeAtor = await nacionalidadeDAO.selectNacionalidadeAtor(atores.id_ator)
+                    delete atores.id_sexo
+                    atores.sexo = sexoAtor
+                    atores.nacionalidade = nacionalidadeAtor
+                }
+                nacionalidadeJSON.Atores = dadosNacionalidade
+                nacionalidadeJSON.quantidade = dadosNacionalidade.length
+                nacionalidadeJSON.status_code = 200
+                
+                return nacionalidadeJSON
+            }else{
+                return message.ERROR_NOT_FOUND // 404
+            }
+        }else{
+            return message.ERROR_INTERNAL_SERVER_DB // 500
+        }
+    }
+}
+
 module.exports = {
     setListarNacionalidade,
-    setListarNacionalidadeById
+    setListarNacionalidadeById,
+    setListarAtorNacionalidade
 }

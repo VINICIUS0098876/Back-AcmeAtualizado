@@ -47,7 +47,7 @@ const updateGenero = async function(idGenero, dadosGenero){
 
 const deleteGenero = async function(id){
     try {
-        const sql = `delete from tbl_genero where id = ${id}`
+        const sql = `delete from tbl_genero where id_genero = ${id}`
         let rsGenero = await prisma.$executeRawUnsafe(sql)
         return rsGenero
     } catch (error) {
@@ -84,7 +84,7 @@ const selectByIdGenero = async function(id){
     }
 }
 
-const selectNameGenero = async function(){
+const selectNameGenero = async function(nome){
     try {
         let sql = `select * from tbl_genero where nome like"%${nome}%"`
         let rsFilmes = await prisma.$queryRawUnsafe(sql)

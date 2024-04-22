@@ -43,6 +43,7 @@ app.use((request, response, next) =>{
     const controllerNacionalidade = require ('./controller/controller_nacionalidade.js')
     const controllerSexo = require ('./controller/controller_sexo.js')
     const controllerAtor = require ('./controller/controller_ator.js')
+    const controllerDiretor = require ('./controller/controller_diretor.js')
 /*******************************************************************************************************/
 
 // Criando um objeto para controlar a chegada dos dados da requisição em formato JSON
@@ -163,7 +164,16 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
                 response.status(404)
         }
     })
-    
+
+    app.delete('/v2/acmeFilmes/genero/:id', cors(), async function(request, response, next){
+        let idGenero = request.params.id
+
+        let dadosGenero = await controllerGenero.setExcluirGenero(idGenero)
+
+        response.status(dadosGenero.status_code)
+        response.json(dadosGenero)
+    })
+
     app.post('/v2/acmeFilmes/genero', cors(), bodyParserJSON, async function(request, response){
 
         // Recebe o content-type da requisição
@@ -278,7 +288,7 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
         response.status(200)
         response.json(resultUptadeClassificacao)
     
-    } )
+    })
 
     /***************************************** NACIONALIDADE ************************************************************/
 
@@ -307,6 +317,14 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
     
         response.status(dadosNacionalidade.status_code);
         response.json(dadosNacionalidade);
+    })
+
+    app.get('/v2/acmeFilmes/nacionalidade/Filtro', cors(), async function(request, response){
+        let nome = request.query.nome
+        let dadosNacionalidade = await controllerNacionalidade.setListarAtorNacionalidade(nome)
+
+        response.status(dadosNacionalidade.status_code)
+        response.json(dadosNacionalidade)
     })
 
     /********************************************** SEXO ****************************************************************/
@@ -338,6 +356,14 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
         response.json(dadosSexo);
     })
 
+    app.get('/v2/acmeFilmes/sexo/Filtro', cors(), async function(request, response){
+        let nome = request.query.nome
+        let dadosSexo = await controllerSexo.setListarAtorSexo(nome)
+
+        response.status(dadosSexo.status_code)
+        response.json(dadosSexo)
+    })
+
     /*********************************************** ATOR ****************************************************************/
     app.get('/v2/filmesAcme/atores', cors(),async function (request,response,next){
 
@@ -349,12 +375,91 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
        response.json(dadosAtor)
     });
 
+    app.get('/v2/filmesAcme/atores/:id', cors(), async function(request,response,next){
 
+        // recebe o id da requisição
+        let idAtor = request.params.id
+    
+        //encaminha o id para a acontroller buscar o Ator
+        let dadosAtor = await controllerAtor.setListarAtorById(idAtor)
+    
+        response.status(dadosAtor.status_code);
+        response.json(dadosAtor);
+    })
+
+    app.delete('/v2/filmesAcme/deleteAtor/:id', cors (), async function (request,response,next){
+
+        let idAtor = request.params.id
+    
+        let dadosAtor = await controllerAtor.setExcluirAtor(idAtor)
+    
+        response.status(dadosAtor.status_code);
+        response.json(dadosAtor)
+    })
+
+    app.post('/v2/filmesAcme/atores', cors(), bodyParserJSON, async function (request, response,next ){
+
+        // recebe o ContentType com os tipos de dados encaminhados na requisição
+        let contentType = request.headers['content-type'];
+    
+        // vou receber o que chegar no corpo da requisição e guardar nessa variável local
+        let dadosBody = request.body;
+        // encaminha os dados para a controller enviar para o DAO
+        let resultDadosNovoAtor = await controllerAtor.setInserirAtor(dadosBody, contentType)
     
     
+        response.status(resultDadosNovoAtor.status_code);
+        response.json(resultDadosNovoAtor);
+    
+    })
 
+    app.put('/v2/filmesAcme/updateAtor/:id', cors(), bodyParserJSON, async function(request,response,next){
 
+        let idAtor = request.params.id
+        let contentType = request.headers['content-type'];
+        let dadosBody = request.body
+    
+        let resultUptadeAtor = await controllerAtor.setAtualizarAtor(idAtor, dadosBody, contentType);
+    
+        
+        response.status(resultUptadeAtor.status_code)
+        response.json(resultUptadeAtor)
+    
+    })
 
+    /************************************* DIRETOR **********************************************************/
+
+    app.get('/v2/filmesAcme/diretores', cors(),async function (request,response,next){
+
+        // chama a função da controller para retornar os filmes;
+        let dadosDiretor = await controllerDiretor.setListarDiretor()
+    
+        // validação para retornar o Json dos filmes ou retornar o erro 404;
+       response.status(dadosDiretor.status_code)
+       response.json(dadosDiretor)
+    });
+
+    app.get('/v2/filmesAcme/diretores/:id', cors(), async function(request,response,next){
+
+        // recebe o id da requisição
+        let idDiretor = request.params.id
+    
+        //encaminha o id para a acontroller buscar o Ator
+        let dadosDiretor = await controllerDiretor.setListarDiretorById(idDiretor)
+    
+        response.status(dadosDiretor.status_code);
+        response.json(dadosDiretor);
+    })
+
+    app.delete('/v2/filmesAcme/deleteDiretor/:id', cors (), async function (request,response,next){
+
+        let idDiretor = request.params.id
+    
+        let dadosDiretor = await controllerDiretor.setExcluirDiretor(idDiretor)
+    
+        response.status(dadosDiretor.status_code);
+        response.json(dadosDiretor)
+    })
 
 
 

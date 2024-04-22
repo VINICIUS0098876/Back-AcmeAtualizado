@@ -42,7 +42,24 @@ const selectByIdSexo = async function(id){
         }
 }
 
+const selectNameSexo = async function(nome){
+    try {
+        let sql = `
+            SELECT tbl_ator.*
+            FROM tbl_ator
+            JOIN tbl_sexo ON tbl_ator.id_sexo = tbl_sexo.id_sexo
+            WHERE tbl_sexo.sigla = '${nome}';`
+        console.log(sql)
+        let rsFilmes = await prisma.$queryRawUnsafe(sql)
+        return rsFilmes
+    } catch (error) {
+        console.error(error)
+        return false
+    }
+}
+
 module.exports = {
     selectAllSexo,
-    selectByIdSexo
+    selectByIdSexo,
+    selectNameSexo
 }
