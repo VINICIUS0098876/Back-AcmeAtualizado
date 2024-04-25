@@ -16,13 +16,13 @@ const { json } = require('body-parser')
 const setInserirNovoClassificacao = async function(dadosClassificacao, contentType){
     try{
 
-        console.log(dadosClassificacao);
         
-            // validação para aplicação do contentType
-            if(String(contentType).toLowerCase() == 'application/json'){
-        
+        // validação para aplicação do contentType
+        if(String(contentType).toLowerCase() == 'application/json'){
+            
             // cria o objeto JSON para devolver os dados criados na requisição
             let novoClassificacaoJSON = {};
+            console.log(dadosClassificacao);
             
         
             // validação de campos obrigatorios ou com digitação inválida
@@ -30,11 +30,13 @@ const setInserirNovoClassificacao = async function(dadosClassificacao, contentTy
                dadosClassificacao.faixa_etaria == ''  ||   dadosClassificacao.faixa_etaria == undefined  || dadosClassificacao.faixa_etaria == null   || dadosClassificacao.faixa_etaria.length > 2 ||
                dadosClassificacao.classificacao == '' ||  dadosClassificacao.classificacao == undefined || dadosClassificacao.classificacao == null  || dadosClassificacao.classificacao.length > 45    
             ){
+
                 
                 // return do status code 400
                 return message.ERROR_REQUIRED_FIELDS
-            
+                
             } else {
+                // console.log(dadosClassificacao)
         
                 
         
@@ -143,11 +145,13 @@ const setExcluirNovoClassificacao = async function(id){
     
         if(idClassificacao == '' || idClassificacao == undefined || idClassificacao == isNaN(idClassificacao) || idClassificacao == null){
             return message.ERROR_INVALID_ID
-        }else{
+        }else{        
+
             let dadosClassificacao = await classificacaoDAO.deleteClassificacao(idClassificacao)
     
+            console.log(dadosClassificacao);
             if(dadosClassificacao){
-                message.SUCCESS_DELETED_ITEM
+              return  message.SUCCESS_DELETED_ITEM
             }else{
                 return message.ERROR_NOT_FOUND
             }
@@ -166,7 +170,7 @@ const setListarClassificacao = async function(){
     if(dadosClassificacao){
 
         if(dadosClassificacao.length> 0){
-            classificacaoJSON.generos = dadosClassificacao
+            classificacaoJSON.classificacao = dadosClassificacao
             classificacaoJSON.quantidade = dadosClassificacao.length
             classificacaoJSON.status_code = 200
             return classificacaoJSON

@@ -49,6 +49,7 @@ const deleteGenero = async function(id){
     try {
         const sql = `delete from tbl_genero where id_genero = ${id}`
         let rsGenero = await prisma.$executeRawUnsafe(sql)
+        console.log(sql)
         return rsGenero
     } catch (error) {
         return false
@@ -106,6 +107,24 @@ const IDGenero = async function(){
     }
 }
 
+const generoAtor = async function(id){
+    try {
+        let sql = `SELECT tbl_genero.nome
+        FROM tbl_filme_genero
+        JOIN tbl_genero ON tbl_filme_genero.id_genero = tbl_genero.id_genero
+        WHERE tbl_filme_genero.id = ${id}`
+
+        console.log(sql)
+        let sqlID = await prisma.$queryRawUnsafe(sql)
+
+        return sqlID
+    } catch (error) {
+        return false
+    }
+}
+
+
+
 
 module.exports = {
     insertGenero,
@@ -114,5 +133,6 @@ module.exports = {
     selectAllGenero,
     selectByIdGenero,
     selectNameGenero,
-    IDGenero
+    IDGenero,
+    generoAtor
 }

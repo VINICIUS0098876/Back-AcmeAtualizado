@@ -15,13 +15,13 @@ const prisma = new PrismaClient()
 
 
 const insertClassificacao = async function(dadosClassificao){
-    console.log('teste');
     try {
         const sql = `insert into tbl_classificacao(faixa_etaria, classificacao, caracteristica, icone)values('${dadosClassificao.faixa_etaria}',
         '${dadosClassificao.classificacao}',
         '${dadosClassificao.caracteristica}',
         '${dadosClassificao.icone}')`
         console.log(sql)
+        
         let result = await prisma.$executeRawUnsafe(sql)
 
         if(result){
@@ -61,7 +61,10 @@ const deleteClassificacao = async function(id){
     try {
         let sql = `delete from tbl_classificacao WHERE id_classificacao = ${id}`
 
-        let rsClassificacao = await prisma.$queryRawUnsafe(sql);
+
+        
+        let rsClassificacao = await prisma.$executeRawUnsafe(sql);
+        console.log(sql);
 
         return rsClassificacao
     } catch (error) {

@@ -27,7 +27,8 @@ const insertFilme = async function(dadosFilme){
                                             data_lancamento,
                                             data_relancamento,
                                             foto_capa,
-                                            valor_unitario        
+                                            valor_unitario,
+                                            id_classificacao        
                 )values(
                                            "${dadosFilme.nome}",
                                            "${dadosFilme.sinopse}",
@@ -47,7 +48,8 @@ const insertFilme = async function(dadosFilme){
                 data_lancamento,
                 data_relancamento,
                 foto_capa,
-                valor_unitario        
+                valor_unitario,
+                id_classificacao        
 )values(
                "${dadosFilme.nome}",
                "${dadosFilme.sinopse}",
@@ -194,6 +196,29 @@ const IDFilme = async function(){
     
 }
 
+const selectFilmeClassificacao = async function(nome){
+    try {
+        let sql = `SELECT f.nome AS nome_do_filme, c.faixa_etaria
+        FROM tbl_filme AS f
+        JOIN tbl_classificacao AS c ON f.id_classificacao = c.id_classificacao
+        WHERE c.faixa_etaria = ${nome}`
+        let rsFilmes = await prisma.$queryRawUnsafe(sql)
+        return rsFilmes
+    } catch (error) {
+        return false
+    }
+}
+
+const deleteFilmeGenero = async function(id){
+    try {
+        const sql = `delete from tbl_filme_genero where id = ${id}`
+        let rsFilme = await prisma.$executeRawUnsafe(sql)
+        return rsFilme
+
+    } catch (error) {
+        return false
+    }
+}
 
 module.exports = {
     insertFilme,
@@ -202,5 +227,7 @@ module.exports = {
     selectAllFilmes,
     selectByIdFilme,
     selectNameFilmes,
-    IDFilme
+    IDFilme,
+    selectFilmeClassificacao,
+    deleteFilmeGenero
 }

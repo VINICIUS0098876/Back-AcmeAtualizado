@@ -144,7 +144,7 @@ try {
         return message.ERROR_INVALID_ID
     }else{
         let dadosGenero = await generoDAO.deleteGenero(idGenero)
-
+// console.log(dadosGenero)
         if(dadosGenero){
            return message.SUCCESS_DELETED_ITEM
         }else{

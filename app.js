@@ -99,6 +99,14 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
         response.json(dadosFilmes)
     })
 
+    app.get('/v2/acmeFilmes/Filmes/FiltroClassificacao', cors(), async function(request, response){
+        let nome = request.query.nome
+        let dadosClassificacao = await controllerFilmes.getFilmeByClassificacao(nome)
+
+        response.status(dadosClassificacao.status_code)
+        response.json(dadosClassificacao)
+    })
+
     // EndPoint: ele retorna os dados pelo id
     app.get('/v2/acmeFilmes/filme/:id', cors(), async function(request, response, next){
 
@@ -245,7 +253,7 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
     
         let dadosClassificacao = await controllerClassificacao.setExcluirNovoClassificacao(idClassificacao);
     
-        response.status(200);
+        response.status(dadosClassificacao.status_code);
         response.json(dadosClassificacao)
     })
 
@@ -459,6 +467,36 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
     
         response.status(dadosDiretor.status_code);
         response.json(dadosDiretor)
+    })
+
+    app.post('/v2/filmesAcme/diretores', cors(), bodyParserJSON, async function (request, response,next ){
+
+        // recebe o ContentType com os tipos de dados encaminhados na requisição
+        let contentType = request.headers['content-type'];
+    
+        // vou receber o que chegar no corpo da requisição e guardar nessa variável local
+        let dadosBody = request.body;
+        // encaminha os dados para a controller enviar para o DAO
+        let resultDadosNovoDiretor = await controllerDiretor.insertDiretor(dadosBody, contentType)
+    
+    
+        response.status(resultDadosNovoDiretor.status_code);
+        response.json(resultDadosNovoDiretor);
+    
+    })
+
+    app.put('/v2/filmesAcme/updateDiretor/:id', cors(), bodyParserJSON, async function(request,response,next){
+
+        let idDiretor = request.params.id
+        let contentType = request.headers['content-type'];
+        let dadosBody = request.body
+    
+        let resultUptadeDiretor = await controllerDiretor.updateDiretor(idDiretor, dadosBody, contentType)
+    
+        
+        response.status(resultUptadeDiretor.status_code)
+        response.json(resultUptadeDiretor)
+    
     })
 
 
