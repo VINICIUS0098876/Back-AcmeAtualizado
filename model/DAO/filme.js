@@ -220,6 +220,22 @@ const deleteFilmeGenero = async function(id){
     }
 }
 
+const deleteFilmeDiretor = async function(id){
+    try {
+        const sql = `delete from tbl_filme_diretor where id = ${id}`
+        let rsFilme = await prisma.$executeRawUnsafe(sql)
+        return rsFilme
+
+    } catch (error) {
+        return false
+    }
+}
+
+
+
+
+
+
 module.exports = {
     insertFilme,
     updateFilme,
@@ -229,5 +245,6 @@ module.exports = {
     selectNameFilmes,
     IDFilme,
     selectFilmeClassificacao,
-    deleteFilmeGenero
+    deleteFilmeGenero,
+    deleteFilmeDiretor
 }

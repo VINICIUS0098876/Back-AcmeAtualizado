@@ -185,6 +185,35 @@ const IDDiretor = async function(){
     
 }
 
+const diretorFilme = async function(){
+    try {
+        let sql = `select cast(last_insert_id() as DECIMAL) as id from tbl_diretor limit 1`
+
+        let sqlID = await prisma.$queryRawUnsafe(sql)
+
+        return sqlID
+    } catch (error) {
+        return false
+    }
+    
+}
+
+const selectFilmeByDiretor = async function(id){
+    try {
+        let sql = `SELECT tbl_diretor.id_diretor, nome, data_nascimento, data_falecimento, biografia, foto
+        FROM tbl_diretor
+        INNER JOIN tbl_filme_diretor ON tbl_diretor.id_diretor = tbl_filme_diretor.id_diretor
+        WHERE tbl_filme_diretor.id = ${id};
+`
+        let rsFilmes = await prisma.$queryRawUnsafe(sql)
+        return rsFilmes
+    } catch (error) {
+        return false
+    }
+}
+
+
+
 
 module.exports = {
     selectAllDiretor,
@@ -194,5 +223,6 @@ module.exports = {
     deleteDiretorNacionalidade,
     insertDiretor,
     updateDiretor,
-    IDDiretor
+    IDDiretor,
+    selectFilmeByDiretor
 }

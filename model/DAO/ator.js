@@ -173,6 +173,8 @@ const IDAtor = async function(){
     
 }
 
+
+
 module.exports = {
     insertAtor,
     updateAtor,

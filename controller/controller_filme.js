@@ -10,6 +10,7 @@ const { application } = require('express')
 const filmesDAO = require('../model/DAO/filme.js')
 const classificacaoDAO = require('../model/DAO/classificacao.js')
 const generoDAO = require('../model/DAO/genero.js')
+const diretorDAO = require('../model/DAO/diretor.js')
 // Import do arquivo de configuração do projeto
 const message = require('../modulo/config.js')
 const { join } = require('@prisma/client/runtime/library.js')
@@ -198,8 +199,9 @@ const setExcluirFilme = async function(id){
     
             let dadosFilme = await filmesDAO.deleteFilme(idFilme)
             let deleteGenero = await filmesDAO.deleteFilmeGenero(idFilme)
+            let deleteDiretor = await filmesDAO.deleteFilmeDiretor(idFilme)
     
-            if(dadosFilme || deleteGenero){
+            if(dadosFilme || deleteGenero || deleteDiretor){
                 return message.SUCCESS_DELETED_ITEM
             }else{
               return message.ERROR_NOT_FOUND
@@ -233,9 +235,11 @@ const getListarFilmes = async function(){
             for(let filmes of dadosFilmes){
                 let classificacaoFilme = await classificacaoDAO.selectByIdClassificacao(filmes.id_classificacao)
                 let generoFilme = await generoDAO.generoAtor(filmes.id)
+                let diretorFilme = await diretorDAO.selectFilmeByDiretor(filmes.id)
                 delete filmes.id_classificacao
                 filmes.classificacao = classificacaoFilme
                 filmes.genero = generoFilme
+                filmes.diretor = diretorFilme
             }
 
 
@@ -286,9 +290,11 @@ const getBuscarFilme = async function(id){
                 for(let filmes of dadosFilme){
                     let classificacaoFilme = await classificacaoDAO.selectByIdClassificacao(filmes.id_classificacao)
                     let generoFilme = await generoDAO.generoAtor(filmes.id)
+                    let diretorFilme = await diretorDAO.selectFilmeByDiretor(filmes.id)
                     delete filmes.id_classificacao
                     filmes.classificacao = classificacaoFilme
                     filmes.genero = generoFilme
+                    filmes.diretor = diretorFilme
                 }
 
                 //Criar o JSON de retorno
