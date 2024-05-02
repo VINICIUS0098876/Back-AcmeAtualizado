@@ -11,6 +11,7 @@ const filmesDAO = require('../model/DAO/filme.js')
 const classificacaoDAO = require('../model/DAO/classificacao.js')
 const generoDAO = require('../model/DAO/genero.js')
 const diretorDAO = require('../model/DAO/diretor.js')
+const atorDAO = require('../model/DAO/ator.js')
 // Import do arquivo de configuração do projeto
 const message = require('../modulo/config.js')
 const { join } = require('@prisma/client/runtime/library.js')
@@ -236,11 +237,15 @@ const getListarFilmes = async function(){
                 let classificacaoFilme = await classificacaoDAO.selectByIdClassificacao(filmes.id_classificacao)
                 let generoFilme = await generoDAO.generoAtor(filmes.id)
                 let diretorFilme = await diretorDAO.selectFilmeByDiretor(filmes.id)
+                let atorFilme = await atorDAO.selectAtorByFilme(filmes.id)
                 delete filmes.id_classificacao
                 filmes.classificacao = classificacaoFilme
                 filmes.genero = generoFilme
                 filmes.diretor = diretorFilme
+                filmes.ator = atorFilme
             }
+
+        
 
 
 
@@ -291,10 +296,12 @@ const getBuscarFilme = async function(id){
                     let classificacaoFilme = await classificacaoDAO.selectByIdClassificacao(filmes.id_classificacao)
                     let generoFilme = await generoDAO.generoAtor(filmes.id)
                     let diretorFilme = await diretorDAO.selectFilmeByDiretor(filmes.id)
+                    let atorFilme = await atorDAO.selectAtorByFilme(filmes.id)
                     delete filmes.id_classificacao
                     filmes.classificacao = classificacaoFilme
                     filmes.genero = generoFilme
                     filmes.diretor = diretorFilme
+                    filmes.ator = atorFilme
                 }
 
                 //Criar o JSON de retorno
@@ -327,6 +334,19 @@ const getNomeFilme = async function(nome){
         if(dadosFilmes){
     
             if(dadosFilmes.length > 0){
+
+                for(let filmes of dadosFilmes){
+                    let classificacaoFilme = await classificacaoDAO.selectByIdClassificacao(filmes.id_classificacao)
+                    let generoFilme = await generoDAO.generoAtor(filmes.id)
+                    let diretorFilme = await diretorDAO.selectFilmeByDiretor(filmes.id)
+                    let atorFilme = await atorDAO.selectAtorByFilme(filmes.id)
+                    delete filmes.id_classificacao
+                    filmes.classificacao = classificacaoFilme
+                    filmes.genero = generoFilme
+                    filmes.diretor = diretorFilme
+                    filmes.ator = atorFilme
+                }
+
                 filmesJSON.nome = dadosFilmes
                 filmesJSON.quantidade = dadosFilmes.length
                 filmesJSON.status_code = 200

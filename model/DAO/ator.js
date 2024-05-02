@@ -45,8 +45,25 @@ const insertAtor = async function(dadosAtor){
             `;
         }
 
-        console.log(sql);
+        
         let result = await prisma.$executeRawUnsafe(sql);
+        if(result){
+            let idAtor = await IDAtor()
+            for(let nacionalidade of dadosAtor.id_nacionalidade){
+                sql = `insert into tbl_ator_nacionalidade(
+                    id_ator,
+                    id_nacionalidade
+                ) values (
+                    ${idAtor[0].id},
+                    ${nacionalidade}
+                )`
+                result=await prisma.$executeRawUnsafe(sql)
+                if(result)
+                    continue
+                else
+                    return false
+            }
+        }
 
         return !!result; // Convertendo para booleano
 
@@ -173,6 +190,20 @@ const IDAtor = async function(){
     
 }
 
+const selectAtorByFilme = async function(id){
+    try {
+        let sql = `SELECT tbl_ator.id_ator, nome, nome_artistico, data_nascimento, data_falecimento, biografia, foto
+        FROM tbl_ator
+        INNER JOIN tbl_filme_ator ON tbl_ator.id_ator = tbl_filme_ator.id_ator
+        WHERE tbl_filme_ator.id = ${id};
+`
+        let rsFilmes = await prisma.$queryRawUnsafe(sql)
+        return rsFilmes
+    } catch (error) {
+        return false
+    }
+}
+
 
 
 module.exports = {
@@ -183,5 +214,6 @@ module.exports = {
     selectByIdAtor,
     selectNameAtor,
     IDAtor,
-    deleteAtorNacionalidade
+    deleteAtorNacionalidade,
+    selectAtorByFilme
 }
