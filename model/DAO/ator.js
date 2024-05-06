@@ -102,15 +102,33 @@ const updateAtor = async function(dadoAtualizado, idAtor) {
         }
         console.log(sql)
         let result = await prisma.$executeRawUnsafe(sql)
-        
+
         if(result){
-           return true
-        }else{
-           return false
+            for(let nacionalidade of dadoAtualizado.id_nacionalidade){
+                sql=`
+                
+                    update tbl_ator_nacionalidade
+                        
+                    set
+
+                        id_nacionalidade=${nacionalidade}
+                    
+                    where id_ator=${idAtor}
+                `
+                let result=await prisma.$executeRawUnsafe(sql)
+                if(result)
+                    continue
+                else
+                    return false
+            }
+            return true
         }
-    }catch(error){
+        else
+            return false
+    } catch (error) {
+        console.log(error)
         return false
-    } 
+    }
 }
 
 const deleteAtor = async function(id){
@@ -204,6 +222,15 @@ const selectAtorByFilme = async function(id){
     }
 }
 
+const selectNameById = async function(nome){
+    try {
+        let sql = `SELECT id_ator FROM tbl_ator WHERE nome = '${nome}'`
+        let rsFilmes = await prisma.$queryRawUnsafe(sql)
+        return rsFilmes
+    } catch (error) {
+        return false
+    }
+}
 
 
 module.exports = {
@@ -215,5 +242,6 @@ module.exports = {
     selectNameAtor,
     IDAtor,
     deleteAtorNacionalidade,
-    selectAtorByFilme
+    selectAtorByFilme,
+    selectNameById
 }

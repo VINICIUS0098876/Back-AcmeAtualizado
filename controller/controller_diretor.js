@@ -292,11 +292,39 @@ const setListarDiretorById = async function(id){
      }
 }
 
+const setListarIdByName = async function(nome){
+    let nomeDiretor = nome
+
+    let diretorJSON = {}
+
+    if(nomeDiretor == '' || nomeDiretor == undefined){
+        return message.ERROR_INVALID_ID // 400
+    }else{
+        let dadosDiretor = await diretorDAO.selectNameById(nome)
+    
+        if(dadosDiretor){
+    
+            if(dadosDiretor.length > 0){
+                diretorJSON.nome = dadosDiretor
+                diretorJSON.quantidade = dadosDiretor.length
+                diretorJSON.status_code = 200
+                
+                return diretorJSON
+            }else{
+                return message.ERROR_NOT_FOUND // 404
+            }
+        }else{
+            return message.ERROR_INTERNAL_SERVER_DB // 500
+        }
+    }
+}
+
 
 module.exports = {
     setExcluirDiretor,
     setListarDiretor,
     setListarDiretorById,
     insertDiretor,
-    updateDiretor
+    updateDiretor,
+    setListarIdByName
 }

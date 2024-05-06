@@ -201,8 +201,9 @@ const setExcluirFilme = async function(id){
             let dadosFilme = await filmesDAO.deleteFilme(idFilme)
             let deleteGenero = await filmesDAO.deleteFilmeGenero(idFilme)
             let deleteDiretor = await filmesDAO.deleteFilmeDiretor(idFilme)
+            let deleteAtor = await filmesDAO.deleteFilmeAtor(idFilme)
     
-            if(dadosFilme || deleteGenero || deleteDiretor){
+            if(dadosFilme || deleteGenero || deleteDiretor || deleteAtor){
                 return message.SUCCESS_DELETED_ITEM
             }else{
               return message.ERROR_NOT_FOUND

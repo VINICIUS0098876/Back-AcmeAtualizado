@@ -291,10 +291,38 @@ const setListarAtorById = async function(id){
      }
 }
 
+const setListarIdByName = async function(nome){
+    let nomeAtor = nome
+
+    let atorJSON = {}
+
+    if(nomeAtor == '' || nomeAtor == undefined){
+        return message.ERROR_INVALID_ID // 400
+    }else{
+        let dadosAtor = await atorDAO.selectNameById(nome)
+    
+        if(dadosAtor){
+    
+            if(dadosAtor.length > 0){
+                atorJSON.nome = dadosAtor
+                atorJSON.quantidade = dadosAtor.length
+                atorJSON.status_code = 200
+                
+                return atorJSON
+            }else{
+                return message.ERROR_NOT_FOUND // 404
+            }
+        }else{
+            return message.ERROR_INTERNAL_SERVER_DB // 500
+        }
+    }
+}
+
 module.exports = {
     setListarAtor,
     setListarAtorById,
     setExcluirAtor,
     setAtualizarAtor,
-    setInserirAtor
+    setInserirAtor,
+    setListarIdByName
 }

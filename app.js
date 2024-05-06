@@ -395,6 +395,14 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
         response.json(dadosAtor);
     })
 
+    app.get('/v2/acmeFilmes/ator/Filtro', cors(), async function(request, response){
+        let nome = request.query.nome
+        let dadosAtor = await controllerAtor.setListarIdByName(nome)
+
+        response.status(dadosAtor.status_code)
+        response.json(dadosAtor)
+    })
+
     app.delete('/v2/filmesAcme/deleteAtor/:id', cors (), async function (request,response,next){
 
         let idAtor = request.params.id
@@ -457,6 +465,14 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
     
         response.status(dadosDiretor.status_code);
         response.json(dadosDiretor);
+    })
+
+    app.get('/v2/acmeFilmes/diretor/Filtro', cors(), async function(request, response){
+        let nome = request.query.nome
+        let dadosDiretor = await controllerDiretor.setListarIdByName(nome)
+
+        response.status(dadosDiretor.status_code)
+        response.json(dadosDiretor)
     })
 
     app.delete('/v2/filmesAcme/deleteDiretor/:id', cors (), async function (request,response,next){

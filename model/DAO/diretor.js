@@ -61,6 +61,23 @@ const insertDiretor = async function(dadosDiretor){
 
             console.log(sql)
             let result = await prisma.$executeRawUnsafe(sql)
+            if(result){
+                let idDiretor = await IDDiretor()
+                for(let nacionalidade of dadosDiretor.id_nacionalidade){
+                    sql = `insert into tbl_diretor_nacionalidade(
+                        id_diretor,
+                        id_nacionalidade
+                    ) values (
+                        ${idDiretor[0].id},
+                        ${nacionalidade}
+                    )`
+                    result=await prisma.$executeRawUnsafe(sql)
+                    if(result)
+                        continue
+                    else
+                        return false
+                }
+            }
     
             return !!result
         
@@ -99,13 +116,31 @@ const updateDiretor = async function(dadoAtualizado, idDiretor) {
         let result = await prisma.$executeRawUnsafe(sql)
         
         if(result){
-           return true
-        }else{
-           return false
+            for(let nacionalidade of dadoAtualizado.id_nacionalidade){
+                sql=`
+                
+                    update tbl_diretor_nacionalidade
+                        
+                    set
+
+                        id_nacionalidade=${nacionalidade}
+                    
+                    where id_diretor=${idDiretor}
+                `
+                let result=await prisma.$executeRawUnsafe(sql)
+                if(result)
+                    continue
+                else
+                    return false
+            }
+            return true
         }
-    }catch(error){
+        else
+            return false
+    } catch (error) {
+        console.log(error)
         return false
-    } 
+    }
 }
 
 const deleteDiretor = async function(id){
@@ -185,18 +220,7 @@ const IDDiretor = async function(){
     
 }
 
-const diretorFilme = async function(){
-    try {
-        let sql = `select cast(last_insert_id() as DECIMAL) as id from tbl_diretor limit 1`
 
-        let sqlID = await prisma.$queryRawUnsafe(sql)
-
-        return sqlID
-    } catch (error) {
-        return false
-    }
-    
-}
 
 const selectFilmeByDiretor = async function(id){
     try {
@@ -205,6 +229,16 @@ const selectFilmeByDiretor = async function(id){
         INNER JOIN tbl_filme_diretor ON tbl_diretor.id_diretor = tbl_filme_diretor.id_diretor
         WHERE tbl_filme_diretor.id = ${id};
 `
+        let rsFilmes = await prisma.$queryRawUnsafe(sql)
+        return rsFilmes
+    } catch (error) {
+        return false
+    }
+}
+
+const selectNameById = async function(nome){
+    try {
+        let sql = `SELECT id_diretor FROM tbl_diretor WHERE nome = '${nome}'`
         let rsFilmes = await prisma.$queryRawUnsafe(sql)
         return rsFilmes
     } catch (error) {
@@ -224,5 +258,6 @@ module.exports = {
     insertDiretor,
     updateDiretor,
     IDDiretor,
-    selectFilmeByDiretor
+    selectFilmeByDiretor,
+    selectNameById
 }
