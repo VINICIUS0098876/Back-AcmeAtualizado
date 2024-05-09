@@ -341,7 +341,65 @@ const deleteFilmeAtor = async function(id){
     }
 }
 
+// const addAtorFilme = async function(dados){
+//     try{
+//         let sql = `insert into tbl_filme_ator(
+//             id_ator,
+//             id
+//         ) values (
+//             ${dados.idAtor},
+//             ${dados.idFilme}
+//         )`
+//         let result = await prisma.$queryRawUnsafe(sql)
+//         if(result){
+//             return true
+//         } else {
+//             return false
+//         }
+//     } catch (error){
+//         return false
+//     }
+// }
 
+// const addGeneroFilme = async function(dados){
+//     try{
+//         let sql = `insert into tbl_filme_genero(
+//             id_genero,
+//             id
+//         ) values (
+//             ${dados.id_genero},
+//             ${dados.id_filme}
+//         )`
+//         let result = await prisma.$queryRawUnsafe(sql)
+//         if(result){
+//             return true
+//         } else {
+//             return false
+//         }
+//     } catch (error){
+//         return false
+//     }
+// }
+
+// const addDiretorFilme = async function(dados){
+//     try{
+//         let sql = `insert into tbl_filme_diretor(
+//             id_diretor,
+//             id
+//         ) values (
+//             ${dados.id_diretor},
+//             ${dados.id_filme}
+//         )`
+//         let result = await prisma.$queryRawUnsafe(sql)
+//         if(result){
+//             return true
+//         } else {
+//             return false
+//         }
+//     } catch (error){
+//         return false
+//     }
+// }
 
 
 
@@ -357,5 +415,8 @@ module.exports = {
     selectFilmeClassificacao,
     deleteFilmeGenero,
     deleteFilmeDiretor,
-    deleteFilmeAtor
+    deleteFilmeAtor,
+    // addAtorFilme,
+    // addGeneroFilme,
+    // addDiretorFilme
 }

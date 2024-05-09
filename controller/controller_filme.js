@@ -64,11 +64,7 @@ const setInserirNovoFilme = async function(dadosFilme, contentType){
             
                         // Encaminha os dados do filme para o DAO inserir no DB
                         let novoFilme = await filmesDAO.insertFilme(dadosFilme)
-                        
-                        if(novoFilme){
-                            let idFilmes = await filmesDAO.IDFilme()
-                            dadosFilme.id = Number(idFilmes[0].id)
-                        }
+                        let id = await filmesDAO.IDFilme()
                 
                         // Validação para verificar se o DAO inseriu os dados do DB
                         if(novoFilme){
@@ -78,6 +74,7 @@ const setInserirNovoFilme = async function(dadosFilme, contentType){
                             novoFilmeJSON.status      = message.SUCCESS_CREATED_ITEM.status
                             novoFilmeJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
                             novoFilmeJSON.message     = message.SUCCESS_CREATED_ITEM.message
+                            novoFilmeJSON.id = id[0].id
                 
                             return novoFilmeJSON //201
                             
@@ -93,6 +90,7 @@ const setInserirNovoFilme = async function(dadosFilme, contentType){
                 return message.ERROR_CONTENT_TYPE //415
             }
     }catch(error){
+        console.log(error);
         return message.ERROR_INTERNAL_SERVER //500 - erro na controller
     }
 
@@ -394,6 +392,90 @@ const getFilmeByClassificacao = async function(nome){
 
 }
 
+const setInserirAtorFilme = async function (dados,contentType) {
+    try {
+    if (String(contentType).toLowerCase() == 'application/json'){
+    let atorAdicionadoJSON = {}
+    if (dados.idAtor == ''|| dados.idAtor == undefined|| dados.idAtor == null||isNaN(dados.idAtor)||
+        dados.idFilme == ''|| dados.idFilme == undefined|| dados.idFilme == null||isNaN(dados.idFilme)
+){
+       return message.ERROR_REQUIRED_FIELDS //400
+    } else {
+            let novoAtorAdicionado = await filmesDAO.addAtorFilme(dados)
+            if(novoAtorAdicionado) {
+                atorAdicionadoJSON.ator = dados
+                atorAdicionadoJSON.status = message.SUCCESS_CREATED_ITEM.status
+                atorAdicionadoJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
+                atorAdicionadoJSON.message = message.SUCCESS_CREATED_ITEM.message
+                return atorAdicionadoJSON //201
+            } else {
+                return message.ERROR_INTERNAL_SERVER_DB //500
+            }
+    }
+} else {
+    return message.ERROR_CONTENT_TYPE // 415
+}
+    }catch(error){
+        return message.ERROR_INTERNAL_SERVER //500 - Erro na controller
+    }
+}
+
+const setInserirGeneroFilme = async function (dados,contentType) {
+    try {
+    if (String(contentType).toLowerCase() == 'application/json'){
+    let generoAdicionadoJSON = {}
+    if (dados.id_filme == ''|| dados.id_filme == undefined|| dados.id_filme == null||isNaN(dados.id_filme)||
+        dados.id_genero == ''|| dados.id_genero == undefined|| dados.id_genero == null||isNaN(dados.id_genero)
+){
+       return message.ERROR_REQUIRED_FIELDS //400
+    } else {
+            let novoGeneroAdicionado = await filmesDAO.addGeneroFilme(dados)
+            if(novoGeneroAdicionado) {
+                generoAdicionadoJSON.genero = dados
+                generoAdicionadoJSON.status = message.SUCCESS_CREATED_ITEM.status
+                generoAdicionadoJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
+                generoAdicionadoJSON.message = message.SUCCESS_CREATED_ITEM.message
+                return generoAdicionadoJSON //201
+            } else {
+                return message.ERROR_INTERNAL_SERVER_DB //500
+            }
+    }
+} else {
+    return message.ERROR_CONTENT_TYPE // 415
+}
+    }catch(error){
+        return message.ERROR_INTERNAL_SERVER //500 - Erro na controller
+    }
+}
+
+const setInserirDiretorFilme = async function (dados,contentType) {
+    try {
+    if (String(contentType).toLowerCase() == 'application/json'){
+    let diretorAdicionadoJSON = {}
+    if (dados.id_filme == ''|| dados.id_filme == undefined|| dados.id_filme == null||isNaN(dados.id_filme)||
+        dados.id_diretor == ''|| dados.id_diretor == undefined|| dados.id_diretor == null||isNaN(dados.id_diretor)
+){
+       return message.ERROR_REQUIRED_FIELDS //400
+    } else {
+            let novoDiretorAdicionado = await filmesDAO.addDiretorFilme(dados)
+            if(novoDiretorAdicionado) {
+                diretorAdicionadoJSON.diretor = dados
+                diretorAdicionadoJSON.status = message.SUCCESS_CREATED_ITEM.status
+                diretorAdicionadoJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
+                diretorAdicionadoJSON.message = message.SUCCESS_CREATED_ITEM.message
+                return diretorAdicionadoJSON //201
+            } else {
+                return message.ERROR_INTERNAL_SERVER_DB //500
+            }
+    }
+} else {
+    return message.ERROR_CONTENT_TYPE // 415
+}
+    }catch(error){
+        return message.ERROR_INTERNAL_SERVER //500 - Erro na controller
+    }
+}
+
 
 module.exports = {
     setInserirNovoFilme,
@@ -402,5 +484,8 @@ module.exports = {
     getListarFilmes,
     getBuscarFilme,
     getNomeFilme,
-    getFilmeByClassificacao
+    getFilmeByClassificacao,
+    setInserirAtorFilme,
+    setInserirGeneroFilme,
+    setInserirDiretorFilme
 }

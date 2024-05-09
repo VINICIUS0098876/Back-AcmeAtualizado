@@ -114,6 +114,8 @@ const setAtualizarAtor = async function(id, dadoAtualizado, contentType){
             
                 
                 //Validação de campos obrigatórios ou com digitação inválida
+                console.log(dadoAtualizado);
+
                 if(dadoAtualizado.nome==''          ||dadoAtualizado.nome==undefined          ||dadoAtualizado.nome==null               ||dadoAtualizado.nome.length>100            ||
                 dadoAtualizado.nome_artistico==''   || dadoAtualizado.nome_artistico==undefined  || dadoAtualizado.nome_artistico==null       || dadoAtualizado.nome_artistico.length>100 ||
                 dadoAtualizado.data_nascimento==''  ||dadoAtualizado.data_nascimento==undefined  ||dadoAtualizado.data_nascimento==null       ||dadoAtualizado.data_nascimento.length!=10 ||
@@ -317,6 +319,8 @@ const setListarIdByName = async function(nome){
         }
     }
 }
+
+
 
 module.exports = {
     setListarAtor,

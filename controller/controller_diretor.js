@@ -73,7 +73,7 @@ const insertDiretor = async function(dadosDiretor, contentType){
                         if(novoDiretor){
                             // console.log(novoAtor)
                             //Cria o JSON de retorno dos dados (201)
-                            novoDiretorJSON.ator       = dadosDiretor
+                            novoDiretorJSON.diretor       = dadosDiretor
                             novoDiretorJSON.status      = message.SUCCESS_CREATED_ITEM.status
                             novoDiretorJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
                             novoDiretorJSON.message     = message.SUCCESS_CREATED_ITEM.message

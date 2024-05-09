@@ -48,25 +48,10 @@ const insertAtor = async function(dadosAtor){
         
         let result = await prisma.$executeRawUnsafe(sql);
         if(result){
-            let idAtor = await IDAtor()
-            for(let nacionalidade of dadosAtor.id_nacionalidade){
-                sql = `insert into tbl_ator_nacionalidade(
-                    id_ator,
-                    id_nacionalidade
-                ) values (
-                    ${idAtor[0].id},
-                    ${nacionalidade}
-                )`
-                result=await prisma.$executeRawUnsafe(sql)
-                if(result)
-                    continue
-                else
-                    return false
-            }
+            return true
+        } else {
+            return false
         }
-
-        return !!result; // Convertendo para booleano
-
     } catch (error) {
         console.error(error);
         return false;
@@ -243,5 +228,6 @@ module.exports = {
     IDAtor,
     deleteAtorNacionalidade,
     selectAtorByFilme,
-    selectNameById
+    selectNameById,
+    
 }

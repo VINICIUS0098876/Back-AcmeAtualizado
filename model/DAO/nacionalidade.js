@@ -45,7 +45,7 @@ const selectByIdNacionalidade = async function(id){
 const selectNacionalidadeAtor = async function(id){
     try {
         // Realiza a busca do genero pelo ID
-        let sql = `select n.nome from tbl_ator_nacionalidade as i
+        let sql = `select n.nome, n.id_nacionalidade from tbl_ator_nacionalidade as i
         join tbl_nacionalidade as n on i.id_nacionalidade=n.id_nacionalidade
         join tbl_ator as a on i.id_ator=a.id_ator
         where a.id_ator = ${id}`;
@@ -97,10 +97,52 @@ const selectAtorByNacionalidade = async function(nome){
     }
 }
 
+// const addNacionalidadeAtor = async function(dados){
+//     try{
+//         let sql = `insert into tbl_ator_nacionalidade(
+//             id_ator,
+//             id_nacionalidade
+//         ) values (
+//             ${dados.id_ator},
+//             ${dados.id_nacionalidade}
+//         )`
+//         let result = await prisma.$queryRawUnsafe(sql)
+//         if(result){
+//             return true
+//         } else {
+//             return false
+//         }
+//     } catch (error){
+//         return false
+//     }
+// }
+
+// const addNacionalidadeDiretor = async function(dados){
+//     try{
+//         let sql = `insert into tbl_diretor_nacionalidade(
+//             id_diretor,
+//             id_nacionalidade
+//         ) values (
+//             ${dados.id_diretor},
+//             ${dados.id_nacionalidade}
+//         )`
+//         let result = await prisma.$queryRawUnsafe(sql)
+//         if(result){
+//             return true
+//         } else {
+//             return false
+//         }
+//     } catch (error){
+//         return false
+//     }
+// }
+
 module.exports = {
     selectAllNacionalidade,
     selectByIdNacionalidade,
     selectNacionalidadeAtor,
     selectNacionalidadeDiretor,
-    selectAtorByNacionalidade
+    selectAtorByNacionalidade,
+    // addNacionalidadeAtor,
+    // addNacionalidadeDiretor
 }

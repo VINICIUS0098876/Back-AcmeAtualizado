@@ -110,7 +110,7 @@ const setAtualizarGenero = async function(id, dadoAtualizado, contentType){
                             if(dadosGenero){
                     
                                 //Cria o JSON de retorno dos dados (201)
-                                atualizarGeneroJSON.filme       = dadosGenero
+                                atualizarGeneroJSON.genero       = dadosGenero
                                 atualizarGeneroJSON.status      = message.SUCCESS_UPDATED_ITEM.status
                                 atualizarGeneroJSON.status_code = message.SUCCESS_UPDATED_ITEM.status_code
                                 atualizarGeneroJSON.message     = message.SUCCESS_UPDATED_ITEM.message
@@ -229,9 +229,10 @@ const getBuscarGenero = async function(id){
 
 const getNomeGenero = async function(nome){
     let nomeGenero = nome
-
+    console.log(nome)
+    
     let generoJSON = {}
-
+    
     if(nomeGenero == '' || nomeGenero == undefined){
         return message.ERROR_INVALID_ID // 400
     }else{

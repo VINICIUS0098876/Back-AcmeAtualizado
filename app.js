@@ -151,10 +151,31 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
         let dadosBody = request.body
         let idFilme = request.params.id
 
+
         let dadosFilme = await controllerFilmes.setAtualizarFilme(idFilme, dadosBody, contentType)
 
         response.status(dadosFilme.status_code)
         response.json(dadosFilme)
+    })
+
+    app.post('/v2/acmefilmes/generofilme', cors(), bodyParserJSON,async function(request,response){
+
+        let contentType = request.headers['content-type'];
+        let dadosBody = request.body;
+    
+        let result = await controllerFilmes.setInserirGeneroFilme(dadosBody,contentType)
+        response.status(result.status_code)
+        response.json(result)
+    })
+
+    app.post('/v2/acmefilmes/diretorfilme', cors(), bodyParserJSON,async function(request,response){
+
+        let contentType = request.headers['content-type'];
+        let dadosBody = request.body;
+    
+        let result = await controllerFilmes.setInserirDiretorFilme(dadosBody,contentType)
+        response.status(result.status_code)
+        response.json(result)
     })
 
     /*********************************************** GENERO **********************************************/
@@ -335,6 +356,16 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
         response.json(dadosNacionalidade)
     })
 
+    app.post('/v2/acmefilmes/diretorNacionalidade', cors(), bodyParserJSON,async function(request,response){
+
+        let contentType = request.headers['content-type'];
+        let dadosBody = request.body;
+    
+        let result = await controllerNacionalidade.setInserirNacionalidadeDiretor(dadosBody,contentType)
+        response.status(result.status_code)
+        response.json(result)
+    })
+
     /********************************************** SEXO ****************************************************************/
 
     app.get('/v2/filmesAcme/sexo', cors(),async function (request,response,next){
@@ -434,7 +465,6 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
         let idAtor = request.params.id
         let contentType = request.headers['content-type'];
         let dadosBody = request.body
-    
         let resultUptadeAtor = await controllerAtor.setAtualizarAtor(idAtor, dadosBody, contentType);
     
         
@@ -442,6 +472,25 @@ app.get('/v1/acmeFilmes/filmes', cors(), async function(request, response, next)
         response.json(resultUptadeAtor)
     
     })
+
+    // app.post('/v2/acmefilmes/nacionalidadeator', cors(), bodyParserJSON,async function(request,response){
+
+    //     let contentType = request.headers['content-type'];
+    //     let dadosBody = request.body;
+    
+    //     let result = await controllerNacionalidade.setInserirNacionalidadeAtor(dadosBody,contentType)
+    //     response.status(result.status_code)
+    //     response.json(result)
+    // })
+    // app.post('/v2/acmefilmes/atorfilme', cors(), bodyParserJSON,async function(request,response){
+
+    //     let contentType = request.headers['content-type'];
+    //     let dadosBody = request.body;
+    
+    //     let result = await controllerFilmes.setInserirAtorFilme(dadosBody,contentType)
+    //     response.status(result.status_code)
+    //     response.json(result)
+    // })
 
     /************************************* DIRETOR **********************************************************/
 

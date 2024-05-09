@@ -23,7 +23,7 @@ const setListarNacionalidade = async function(){
     if(dadosNacionalidade){
 
         if(dadosNacionalidade.length> 0){
-            nacionalidadeJSON.generos = dadosNacionalidade
+            nacionalidadeJSON.nacionalidade = dadosNacionalidade
             nacionalidadeJSON.quantidade = dadosNacionalidade.length
             nacionalidadeJSON.status_code = 200
             return nacionalidadeJSON
@@ -118,8 +118,66 @@ const setListarAtorNacionalidade = async function(nome){
     }
 }
 
+const setInserirNacionalidadeAtor = async function (dados,contentType) {
+    try {
+    if (String(contentType).toLowerCase() == 'application/json'){
+    let nacionalidadeAdicionadaJSON = {}
+    if (dados.id_ator == ''|| dados.id_ator == undefined|| dados.id_ator == null||isNaN(dados.id_ator)||
+        dados.id_nacionalidade == ''|| dados.id_nacionalidade == undefined|| dados.id_nacionalidade == null||isNaN(dados.id_nacionalidade)
+){
+       return message.ERROR_REQUIRED_FIELDS //400
+    } else {
+            let novaNacionalidadeAdicionada = await nacionalidadeDAO.addNacionalidadeAtor(dados)
+            if(novaNacionalidadeAdicionada) {
+                nacionalidadeAdicionadaJSON.nacionalidade = dados
+                nacionalidadeAdicionadaJSON.status = message.SUCCESS_CREATED_ITEM.status
+                nacionalidadeAdicionadaJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
+                nacionalidadeAdicionadaJSON.message = message.SUCCESS_CREATED_ITEM.message
+                return nacionalidadeAdicionadaJSON //201
+            } else {
+                return message.ERROR_INTERNAL_SERVER_DB //500
+            }
+    }
+} else {
+    return message.ERROR_CONTENT_TYPE // 415
+}
+    }catch(error){
+        return message.ERROR_INTERNAL_SERVER //500 - Erro na controller
+    }
+}
+
+const setInserirNacionalidadeDiretor = async function (dados,contentType) {
+    try {
+    if (String(contentType).toLowerCase() == 'application/json'){
+    let nacionalidadeAdicionadaJSON = {}
+    if (dados.id_diretor == ''|| dados.id_diretor == undefined|| dados.id_diretor == null||isNaN(dados.id_diretor)||
+        dados.id_nacionalidade == ''|| dados.id_nacionalidade == undefined|| dados.id_nacionalidade == null||isNaN(dados.id_nacionalidade)
+){
+       return message.ERROR_REQUIRED_FIELDS //400
+    } else {
+            let novaNacionalidadeAdicionada = await nacionalidadeDAO.addNacionalidadeDiretor(dados)
+            if(novaNacionalidadeAdicionada) {
+                nacionalidadeAdicionadaJSON.nacionalidade = dados
+                nacionalidadeAdicionadaJSON.status = message.SUCCESS_CREATED_ITEM.status
+                nacionalidadeAdicionadaJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
+                nacionalidadeAdicionadaJSON.message = message.SUCCESS_CREATED_ITEM.message
+                return nacionalidadeAdicionadaJSON //201
+            } else {
+                return message.ERROR_INTERNAL_SERVER_DB //500
+            }
+    }
+} else {
+    return message.ERROR_CONTENT_TYPE // 415
+}
+    }catch(error){
+        return message.ERROR_INTERNAL_SERVER //500 - Erro na controller
+    }
+}
+
 module.exports = {
     setListarNacionalidade,
     setListarNacionalidadeById,
-    setListarAtorNacionalidade
+    setListarAtorNacionalidade,
+    setInserirNacionalidadeAtor,
+    setInserirNacionalidadeDiretor
 }
